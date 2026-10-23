@@ -1,0 +1,346 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portal Link Kerja</title>
+<style>
+:root {
+  --navy: #173454;
+  --blue: #3978ae;
+  --bg: #f4f7fb;
+  --text: #243449;
+  --muted: #718096;
+  --line: #e4eaf1;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+}
+header {
+  background: var(--navy);
+  color: white;
+  padding: 30px 22px;
+}
+.header-inner, main {
+  max-width: 1050px;
+  margin: auto;
+}
+.brand {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #bcd2e8;
+  font-weight: bold;
+}
+h1 { margin: 10px 0; font-size: 30px; }
+header p { color: #d4e1ef; margin-bottom: 0; }
+main { padding: 26px 20px 50px; }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+.stat, .project, .toolbar {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+}
+.stat { padding: 18px; }
+.stat-label { color: var(--muted); font-size: 13px; }
+.stat-number { font-size: 26px; font-weight: bold; margin-top: 8px; }
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+h2 { font-size: 20px; margin: 0; }
+.toolbar { padding: 14px; margin-bottom: 18px; }
+input, select {
+  width: 100%;
+  border: 1px solid #dbe3ed;
+  border-radius: 8px;
+  padding: 12px;
+  background: white;
+  font-size: 14px;
+  color: var(--text);
+}
+.filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+}
+.filters button, .open-link {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 9px 13px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 13px;
+}
+.filters button {
+  background: white;
+  color: var(--text);
+}
+.filters button.active {
+  background: var(--navy);
+  color: white;
+}
+.projects {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 15px;
+}
+.project { padding: 20px; }
+.project-top {
+  display: flex;
+  gap: 13px;
+  align-items: flex-start;
+}
+.project-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  display: grid;
+  place-items: center;
+  background: #eaf2fa;
+  font-size: 21px;
+  flex-shrink: 0;
+}
+.project h3 { margin: 2px 0 8px; font-size: 16px; }
+.project p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.category {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 5px 9px;
+  border-radius: 6px;
+  background: #f0f4f8;
+  color: #536a82;
+  font-size: 11px;
+  font-weight: bold;
+}
+.open-link {
+  display: inline-block;
+  margin-top: 17px;
+  background: white;
+  color: var(--blue);
+  text-decoration: none;
+}
+.open-link:hover { background: #eef5fc; }
+.empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--muted);
+  padding: 40px 10px;
+}
+footer {
+  text-align: center;
+  padding: 22px;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media (max-width: 600px) {
+  h1 { font-size: 25px; }
+  .stats { gap: 8px; }
+  .stat { padding: 12px; }
+  .stat-number { font-size: 22px; }
+  .projects { grid-template-columns: 1fr; }
+  .section-heading { align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">WORK HUB · PORTAL LINK KERJA</div>
+    <h1>Pusat Akses Pekerjaan</h1>
+    <p>Semua proyek dan aplikasi kerja dalam satu tempat.</p>
+  </div>
+</header>
+
+<main>
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-label">Total Proyek</div>
+      <div class="stat-number" id="total">4</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Kategori</div>
+      <div class="stat-number">4</div>
+    </div>
+    <div class="stat">
+      <div class="stat-label">Link Aktif</div>
+      <div class="stat-number" id="active">0</div>
+    </div>
+  </div>
+
+  <div class="section-heading">
+    <h2>Daftar Proyek</h2>
+  </div>
+
+  <div class="toolbar">
+    <input id="search" type="search"
+      placeholder="Cari nama proyek..."
+      aria-label="Cari proyek">
+
+    <div class="filters" id="filters">
+      <button class="active" data-category="Semua">Semua</button>
+      <button data-category="Pelatihan">Pelatihan</button>
+      <button data-category="Laboratorium">Laboratorium</button>
+      <button data-category="LEAN & 5S">LEAN & 5S</button>
+      <button data-category="Administrasi">Administrasi</button>
+    </div>
+  </div>
+
+  <div class="projects" id="projects"></div>
+</main>
+
+<footer>
+  Portal Link Kerja · Pusat akses proyek internal
+</footer>
+
+<script>
+const projects = [
+  {
+    name: "Rekap Nilai Peserta",
+    category: "Pelatihan",
+    icon: "📊",
+    desc: "Nilai tes, nilai akhir, dan hasil evaluasi peserta.",
+    url: ""
+  },
+  {
+    name: "Perkembangan Peserta",
+    category: "Pelatihan",
+    icon: "📈",
+    desc: "Pemantauan kemajuan dan pencapaian belajar.",
+    url: ""
+  },
+  {
+    name: "Rekap Absensi",
+    category: "Pelatihan",
+    icon: "📅",
+    desc: "Kehadiran kelas dan partisipasi peserta.",
+    url: ""
+  },
+  {
+    name: "Hasil Tes HSK",
+    category: "Pelatihan",
+    icon: "🎓",
+    desc: "Hasil ujian dan evaluasi pembelajaran Mandarin.",
+    url: ""
+  }
+];
+
+let selectedCategory = "Semua";
+
+const projectContainer = document.getElementById("projects");
+const searchInput = document.getElementById("search");
+
+function renderProjects() {
+  const keyword = searchInput.value.toLowerCase();
+
+  const filtered = projects.filter(project => {
+    const matchesCategory =
+      selectedCategory === "Semua" ||
+      project.category === selectedCategory;
+
+    const matchesSearch =
+      (project.name + " " + project.desc + " " +
+      project.category).toLowerCase().includes(keyword);
+
+    return matchesCategory && matchesSearch;
+  });
+
+  projectContainer.replaceChildren();
+
+  document.getElementById("total").textContent = projects.length;
+  document.getElementById("active").textContent =
+    projects.filter(p => p.url.trim() !== "").length;
+
+  if (filtered.length === 0) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Proyek tidak ditemukan.";
+    projectContainer.appendChild(empty);
+    return;
+  }
+
+  filtered.forEach(project => {
+    const card = document.createElement("article");
+    card.className = "project";
+
+    const top = document.createElement("div");
+    top.className = "project-top";
+
+    const icon = document.createElement("div");
+    icon.className = "project-icon";
+    icon.textContent = project.icon;
+
+    const details = document.createElement("div");
+    details.style.flex = "1";
+
+    const title = document.createElement("h3");
+    title.textContent = project.name;
+
+    const description = document.createElement("p");
+    description.textContent = project.desc;
+
+    details.append(title, description);
+    top.append(icon, details);
+
+    const category = document.createElement("span");
+    category.className = "category";
+    category.textContent = project.category;
+
+    card.append(top, category);
+
+    if (project.url.trim()) {
+      const link = document.createElement("a");
+      link.className = "open-link";
+      link.textContent = "Buka Proyek ↗";
+      link.href = project.url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      card.appendChild(link);
+    } else {
+      const status = document.createElement("p");
+      status.style.marginTop = "17px";
+      status.textContent = "Link belum dihubungkan.";
+      card.appendChild(status);
+    }
+
+    projectContainer.appendChild(card);
+  });
+}
+
+document.getElementById("filters").addEventListener("click", event => {
+  const button = event.target.closest("button[data-category]");
+  if (!button) return;
+
+  selectedCategory = button.dataset.category;
+
+  document.querySelectorAll("#filters button").forEach(item => {
+    item.classList.toggle("active", item === button);
+  });
+
+  renderProjects();
+});
+
+searchInput.addEventListener("input", renderProjects);
+
+renderProjects();
+</script>
+</body>
+</html>
