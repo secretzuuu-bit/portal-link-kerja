@@ -1,346 +1,261 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portal Link Kerja</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root {
-  --navy: #173454;
-  --blue: #3978ae;
-  --bg: #f4f7fb;
-  --text: #243449;
-  --muted: #718096;
-  --line: #e4eaf1;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-}
-header {
-  background: var(--navy);
-  color: white;
-  padding: 30px 22px;
-}
-.header-inner, main {
-  max-width: 1050px;
-  margin: auto;
-}
-.brand {
-  font-size: 12px;
-  letter-spacing: 2px;
-  color: #bcd2e8;
-  font-weight: bold;
-}
-h1 { margin: 10px 0; font-size: 30px; }
-header p { color: #d4e1ef; margin-bottom: 0; }
-main { padding: 26px 20px 50px; }
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  margin-bottom: 28px;
-}
-.stat, .project, .toolbar {
-  background: white;
-  border: 1px solid var(--line);
-  border-radius: 13px;
-}
-.stat { padding: 18px; }
-.stat-label { color: var(--muted); font-size: 13px; }
-.stat-number { font-size: 26px; font-weight: bold; margin-top: 8px; }
-.section-heading {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-h2 { font-size: 20px; margin: 0; }
-.toolbar { padding: 14px; margin-bottom: 18px; }
-input, select {
-  width: 100%;
-  border: 1px solid #dbe3ed;
-  border-radius: 8px;
-  padding: 12px;
-  background: white;
-  font-size: 14px;
-  color: var(--text);
-}
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-top: 12px;
-}
-.filters button, .open-link {
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 9px 13px;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 13px;
-}
-.filters button {
-  background: white;
-  color: var(--text);
-}
-.filters button.active {
-  background: var(--navy);
-  color: white;
-}
-.projects {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 15px;
-}
-.project { padding: 20px; }
-.project-top {
-  display: flex;
-  gap: 13px;
-  align-items: flex-start;
-}
-.project-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 11px;
-  display: grid;
-  place-items: center;
-  background: #eaf2fa;
-  font-size: 21px;
-  flex-shrink: 0;
-}
-.project h3 { margin: 2px 0 8px; font-size: 16px; }
-.project p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.6;
-}
-.category {
-  display: inline-block;
-  margin-top: 16px;
-  padding: 5px 9px;
-  border-radius: 6px;
-  background: #f0f4f8;
-  color: #536a82;
-  font-size: 11px;
-  font-weight: bold;
-}
-.open-link {
-  display: inline-block;
-  margin-top: 17px;
-  background: white;
-  color: var(--blue);
-  text-decoration: none;
-}
-.open-link:hover { background: #eef5fc; }
-.empty {
-  grid-column: 1 / -1;
-  text-align: center;
-  color: var(--muted);
-  padding: 40px 10px;
-}
-footer {
-  text-align: center;
-  padding: 22px;
-  color: var(--muted);
-  font-size: 12px;
-}
-@media (max-width: 600px) {
-  h1 { font-size: 25px; }
-  .stats { gap: 8px; }
-  .stat { padding: 12px; }
-  .stat-number { font-size: 22px; }
-  .projects { grid-template-columns: 1fr; }
-  .section-heading { align-items: flex-start; }
-}
+:root{--navy:#173454;--blue:#3978ae;--bg:#f4f7fb;--text:#243449;--muted:#718096;--line:#e4eaf1;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:var(--navy);color:white;padding:30px 22px}.header-inner,main{max-width:1050px;margin:auto}
+.brand{font-size:12px;letter-spacing:2px;color:#bcd2e8;font-weight:bold}h1{margin:10px 0;font-size:30px}header p{color:#d4e1ef;margin-bottom:0}
+main{padding:26px 20px 50px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:28px}
+.stat,.project,.toolbar,.panel{background:white;border:1px solid var(--line);border-radius:13px}.stat{padding:18px}
+.stat-label{color:var(--muted);font-size:13px}.stat-number{font-size:26px;font-weight:bold;margin-top:8px}
+.section-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}h2{font-size:20px;margin:0}
+.toolbar{padding:14px;margin-bottom:18px}input,select,textarea{width:100%;border:1px solid #dbe3ed;border-radius:8px;padding:12px;background:white;font-size:14px;color:var(--text)}
+textarea{min-height:90px;resize:vertical}.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+button,.open-link{border:1px solid var(--line);border-radius:8px;padding:9px 13px;cursor:pointer;font-weight:600;font-size:13px}
+button{background:white;color:var(--text)}button.primary{background:var(--navy);color:white;border-color:var(--navy)}
+button.danger{color:var(--red);border-color:#f2c7c4}button:disabled{opacity:.55;cursor:wait}
+.filters button.active{background:var(--navy);color:white}.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.project{padding:20px}.project-top{display:flex;gap:13px;align-items:flex-start}.project-icon{width:44px;height:44px;border-radius:11px;display:grid;place-items:center;background:#eaf2fa;font-size:21px;flex-shrink:0}
+.project h3{margin:2px 0 8px;font-size:16px}.project p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.category{display:inline-block;margin-top:16px;padding:5px 9px;border-radius:6px;background:#f0f4f8;color:#536a82;font-size:11px;font-weight:bold}
+.open-link{display:inline-block;margin-top:17px;background:white;color:var(--blue);text-decoration:none}.open-link:hover{background:#eef5fc}
+.card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}.card-actions button{padding:8px 10px}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:40px 10px}
+.admin-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:18px}.notice{font-size:13px;color:var(--muted);margin:10px 0}
+.panel{padding:18px;margin:0 0 18px}.panel h2{margin-bottom:14px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;font-size:13px;font-weight:bold;margin-bottom:6px}.field.full{grid-column:1/-1}.form-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.hidden{display:none!important}.error{color:var(--red);font-size:13px;margin-top:10px;white-space:pre-wrap}.success{color:#167647;font-size:13px;margin-top:10px;white-space:pre-wrap}
+footer{text-align:center;padding:22px;color:var(--muted);font-size:12px}
+@media(max-width:600px){h1{font-size:25px}.stats{gap:8px}.stat{padding:12px}.stat-number{font-size:22px}.projects{grid-template-columns:1fr}.section-heading{align-items:flex-start}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}}
 </style>
 </head>
 <body>
-<header>
-  <div class="header-inner">
-    <div class="brand">WORK HUB · PORTAL LINK KERJA</div>
-    <h1>Pusat Akses Pekerjaan</h1>
-    <p>Semua proyek dan aplikasi kerja dalam satu tempat.</p>
-  </div>
-</header>
-
+<header><div class="header-inner"><div class="brand">WORK HUB · PORTAL LINK KERJA</div><h1>Pusat Akses Pekerjaan</h1><p>Semua proyek dan aplikasi kerja dalam satu tempat.</p></div></header>
 <main>
   <div class="stats">
-    <div class="stat">
-      <div class="stat-label">Total Proyek</div>
-      <div class="stat-number" id="total">4</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Kategori</div>
-      <div class="stat-number">4</div>
-    </div>
-    <div class="stat">
-      <div class="stat-label">Link Aktif</div>
-      <div class="stat-number" id="active">0</div>
-    </div>
+    <div class="stat"><div class="stat-label">Total Proyek Aktif</div><div class="stat-number" id="total">0</div></div>
+    <div class="stat"><div class="stat-label">Kategori</div><div class="stat-number" id="categoryTotal">0</div></div>
+    <div class="stat"><div class="stat-label">Link Terhubung</div><div class="stat-number" id="active">0</div></div>
   </div>
-
-  <div class="section-heading">
-    <h2>Daftar Proyek</h2>
+  <div class="admin-bar">
+    <button id="loginToggle" class="primary">Login Admin</button>
+    <button id="logoutButton" class="hidden">Keluar</button>
+    <span id="loginStatus" class="notice">Mode pengunjung: hanya dapat melihat proyek.</span>
   </div>
-
-  <div class="toolbar">
-    <input id="search" type="search"
-      placeholder="Cari nama proyek..."
-      aria-label="Cari proyek">
-
+  <section id="loginPanel" class="panel hidden">
+    <h2>Login Admin</h2>
+    <form id="loginForm">
+      <div class="form-grid">
+        <div class="field"><label for="loginEmail">Email admin</label><input id="loginEmail" type="email" autocomplete="username" required></div>
+        <div class="field"><label for="loginPassword">Kata sandi</label><input id="loginPassword" type="password" autocomplete="current-password" required></div>
+      </div>
+      <div class="form-actions"><button class="primary" type="submit">Login</button><button type="button" id="cancelLogin">Batal</button></div>
+      <div id="loginMessage" class="error"></div>
+    </form>
+  </section>
+  <section id="editorPanel" class="panel hidden">
+    <h2 id="editorTitle">Tambah Proyek</h2>
+    <form id="projectForm">
+      <input type="hidden" id="projectId">
+      <div class="form-grid">
+        <div class="field"><label for="projectName">Nama proyek *</label><input id="projectName" required maxlength="150"></div>
+        <div class="field"><label for="projectCategory">Kategori *</label>
+          <select id="projectCategory" required>
+            <option value="Pelatihan">Pelatihan</option><option value="Laboratorium">Laboratorium</option><option value="LEAN & 5S">LEAN & 5S</option><option value="Administrasi">Administrasi</option>
+          </select>
+        </div>
+        <div class="field full"><label for="projectDescription">Deskripsi</label><textarea id="projectDescription" maxlength="1000"></textarea></div>
+        <div class="field"><label for="projectUrl">Link proyek (URL)</label><input id="projectUrl" type="url" placeholder="https://..." ></div>
+        <div class="field"><label for="projectPic">PIC / penanggung jawab</label><input id="projectPic" maxlength="150" placeholder="Nama PIC"></div>
+        <div class="field"><label for="projectIcon">Ikon (emoji atau teks singkat)</label><input id="projectIcon" maxlength="8" value="📊"></div>
+        <div class="field"><label for="projectActive">Status</label><select id="projectActive"><option value="true">Aktif</option><option value="false">Nonaktif</option></select></div>
+      </div>
+      <div class="form-actions"><button class="primary" type="submit" id="saveButton">Simpan Data</button><button type="button" id="cancelEdit">Batal</button></div>
+      <div id="formMessage" class="error"></div>
+    </form>
+  </section>
+  <div class="section-heading"><h2>Daftar Proyek</h2><button id="addButton" class="primary hidden">+ Tambah Data</button></div>
+  <div class="toolbar"><input id="search" type="search" placeholder="Cari nama proyek..." aria-label="Cari proyek">
     <div class="filters" id="filters">
-      <button class="active" data-category="Semua">Semua</button>
-      <button data-category="Pelatihan">Pelatihan</button>
-      <button data-category="Laboratorium">Laboratorium</button>
-      <button data-category="LEAN & 5S">LEAN & 5S</button>
-      <button data-category="Administrasi">Administrasi</button>
+      <button class="active" data-category="Semua">Semua</button><button data-category="Pelatihan">Pelatihan</button><button data-category="Laboratorium">Laboratorium</button><button data-category="LEAN & 5S">LEAN & 5S</button><button data-category="Administrasi">Administrasi</button>
     </div>
   </div>
-
-  <div class="projects" id="projects"></div>
+  <div class="projects" id="projects"><div class="empty">Memuat data proyek...</div></div>
+  <div id="pageMessage" class="error"></div>
 </main>
-
-<footer>
-  Portal Link Kerja · Pusat akses proyek internal
-</footer>
-
+<footer>Portal Link Kerja · Pusat akses proyek internal</footer>
 <script>
-const projects = [
-  {
-    name: "Rekap Nilai Peserta",
-    category: "Pelatihan",
-    icon: "📊",
-    desc: "Nilai tes, nilai akhir, dan hasil evaluasi peserta.",
-    url: ""
-  },
-  {
-    name: "Perkembangan Peserta",
-    category: "Pelatihan",
-    icon: "📈",
-    desc: "Pemantauan kemajuan dan pencapaian belajar.",
-    url: ""
-  },
-  {
-    name: "Rekap Absensi",
-    category: "Pelatihan",
-    icon: "📅",
-    desc: "Kehadiran kelas dan partisipasi peserta.",
-    url: ""
-  },
-  {
-    name: "Hasil Tes HSK",
-    category: "Pelatihan",
-    icon: "🎓",
-    desc: "Hasil ujian dan evaluasi pembelajaran Mandarin.",
-    url: ""
-  }
-];
+/* GANTI dua nilai di bawah ini dengan URL project dan Publishable key Supabase milikmu. */
+const SUPABASE_URL = "https://enmhnmpipiwooxbepzmz.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_RTXFe6H_uU64mLJP5kSiCg_eqRXijwz
+";
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
+let projects = [];
 let selectedCategory = "Semua";
+let isAdmin = false;
 
-const projectContainer = document.getElementById("projects");
-const searchInput = document.getElementById("search");
+const $ = id => document.getElementById(id);
+const projectContainer = $("projects");
 
-function renderProjects() {
-  const keyword = searchInput.value.toLowerCase();
-
-  const filtered = projects.filter(project => {
-    const matchesCategory =
-      selectedCategory === "Semua" ||
-      project.category === selectedCategory;
-
-    const matchesSearch =
-      (project.name + " " + project.desc + " " +
-      project.category).toLowerCase().includes(keyword);
-
-    return matchesCategory && matchesSearch;
-  });
-
-  projectContainer.replaceChildren();
-
-  document.getElementById("total").textContent = projects.length;
-  document.getElementById("active").textContent =
-    projects.filter(p => p.url.trim() !== "").length;
-
-  if (filtered.length === 0) {
-    const empty = document.createElement("div");
-    empty.className = "empty";
-    empty.textContent = "Proyek tidak ditemukan.";
-    projectContainer.appendChild(empty);
-    return;
+function safeUrl(value) {
+  try {
+    const u = new URL(value);
+    return (u.protocol === "https:" || u.protocol === "http:") ? u.href : "";
+  } catch { return ""; }
+}
+function setMessage(id, message, type="error") {
+  const el = $(id); el.textContent = message; el.className = type;
+}
+function resetForm() {
+  $("projectForm").reset(); $("projectId").value = ""; $("projectIcon").value = "📊";
+  $("editorTitle").textContent = "Tambah Proyek"; $("formMessage").textContent = "";
+}
+function openEditor(project=null) {
+  if (!isAdmin) return;
+  resetForm();
+  if (project) {
+    $("editorTitle").textContent = "Edit Proyek";
+    $("projectId").value = project.id;
+    $("projectName").value = project.name || "";
+    $("projectCategory").value = project.category || "Pelatihan";
+    $("projectDescription").value = project.description || "";
+    $("projectUrl").value = project.url || "";
+    $("projectPic").value = project.pic || "";
+    $("projectIcon").value = project.icon || "📊";
+    $("projectActive").value = String(project.is_active !== false);
   }
-
+  $("editorPanel").classList.remove("hidden");
+  $("editorPanel").scrollIntoView({behavior:"smooth",block:"start"});
+}
+function updateAdminUI() {
+  $("loginToggle").classList.toggle("hidden", isAdmin);
+  $("logoutButton").classList.toggle("hidden", !isAdmin);
+  $("addButton").classList.toggle("hidden", !isAdmin);
+  $("loginStatus").textContent = isAdmin ? "Login sebagai admin: tambah, edit, dan hapus data tersedia." : "Mode pengunjung: hanya dapat melihat proyek.";
+  renderProjects();
+}
+function renderProjects() {
+  const keyword = $("search").value.toLowerCase().trim();
+  const filtered = projects.filter(p => {
+    const categoryMatch = selectedCategory === "Semua" || p.category === selectedCategory;
+    const searchMatch = [p.name,p.description,p.category,p.pic].join(" ").toLowerCase().includes(keyword);
+    return categoryMatch && searchMatch;
+  });
+  $("total").textContent = projects.filter(p => p.is_active !== false).length;
+  $("categoryTotal").textContent = new Set(projects.filter(p=>p.is_active!==false).map(p=>p.category).filter(Boolean)).size;
+  $("active").textContent = projects.filter(p => p.is_active !== false && safeUrl(p.url)).length;
+  projectContainer.replaceChildren();
+  if (!filtered.length) {
+    const empty=document.createElement("div"); empty.className="empty"; empty.textContent="Belum ada proyek untuk filter ini."; projectContainer.appendChild(empty); return;
+  }
   filtered.forEach(project => {
-    const card = document.createElement("article");
-    card.className = "project";
-
-    const top = document.createElement("div");
-    top.className = "project-top";
-
-    const icon = document.createElement("div");
-    icon.className = "project-icon";
-    icon.textContent = project.icon;
-
-    const details = document.createElement("div");
-    details.style.flex = "1";
-
-    const title = document.createElement("h3");
-    title.textContent = project.name;
-
-    const description = document.createElement("p");
-    description.textContent = project.desc;
-
-    details.append(title, description);
-    top.append(icon, details);
-
-    const category = document.createElement("span");
-    category.className = "category";
-    category.textContent = project.category;
-
-    card.append(top, category);
-
-    if (project.url.trim()) {
-      const link = document.createElement("a");
-      link.className = "open-link";
-      link.textContent = "Buka Proyek ↗";
-      link.href = project.url;
-      link.target = "_blank";
-      link.rel = "noopener noreferrer";
-      card.appendChild(link);
-    } else {
-      const status = document.createElement("p");
-      status.style.marginTop = "17px";
-      status.textContent = "Link belum dihubungkan.";
-      card.appendChild(status);
+    const card=document.createElement("article"); card.className="project";
+    const top=document.createElement("div"); top.className="project-top";
+    const icon=document.createElement("div"); icon.className="project-icon"; icon.textContent=project.icon || "📊";
+    const details=document.createElement("div"); details.style.flex="1";
+    const title=document.createElement("h3"); title.textContent=project.name || "Tanpa nama";
+    const desc=document.createElement("p"); desc.textContent=project.description || "";
+    details.append(title,desc); top.append(icon,details); card.append(top);
+    const cat=document.createElement("span"); cat.className="category"; cat.textContent=project.category || "Tanpa kategori"; card.append(cat);
+    if (project.pic) { const pic=document.createElement("p"); pic.style.marginTop="9px"; pic.textContent="PIC: "+project.pic; card.append(pic); }
+    const link=safeUrl(project.url);
+    if (link && project.is_active !== false) { const a=document.createElement("a"); a.className="open-link"; a.textContent="Buka Proyek ↗"; a.href=link; a.target="_blank"; a.rel="noopener noreferrer"; card.append(a); }
+    else { const status=document.createElement("p"); status.style.marginTop="17px"; status.textContent=project.is_active===false?"Status: Nonaktif":"Link belum dihubungkan."; card.append(status); }
+    if (isAdmin) {
+      const actions=document.createElement("div"); actions.className="card-actions";
+      const edit=document.createElement("button"); edit.textContent="Edit"; edit.addEventListener("click",()=>openEditor(project));
+      const del=document.createElement("button"); del.className="danger"; del.textContent="Hapus"; del.addEventListener("click",()=>deleteProject(project));
+      actions.append(edit,del); card.append(actions);
     }
-
-    projectContainer.appendChild(card);
+    projectContainer.append(card);
   });
 }
-
-document.getElementById("filters").addEventListener("click", event => {
-  const button = event.target.closest("button[data-category]");
-  if (!button) return;
-
-  selectedCategory = button.dataset.category;
-
-  document.querySelectorAll("#filters button").forEach(item => {
-    item.classList.toggle("active", item === button);
-  });
-
+async function loadProjects() {
+  setMessage("pageMessage","");
+  const {data,error}=await db.from("project_links").select("*").order("created_at",{ascending:false});
+  if (error) {
+    projectContainer.replaceChildren();
+    setMessage("pageMessage","Data gagal dimuat: "+error.message+". Pastikan URL/key benar dan kebijakan SELECT Supabase mengizinkan pengunjung melihat proyek aktif.");
+    return;
+  }
+  projects=(data||[]).map(row=>({...row, icon:row.icon || "📊"}));
+  if (!isAdmin) projects=projects.filter(p=>p.is_active !== false);
+  renderProjects();
+}
+$("loginToggle").addEventListener("click",()=>{$("loginPanel").classList.remove("hidden");$("loginPanel").scrollIntoView({behavior:"smooth"});});
+$("cancelLogin").addEventListener("click",()=>{$("loginPanel").classList.add("hidden");setMessage("loginMessage","");});
+$("loginForm").addEventListener("submit",async e=>{
+  e.preventDefault(); setMessage("loginMessage","Memeriksa login...","notice");
+  const {error}=await db.auth.signInWithPassword({email:$("loginEmail").value.trim(),password:$("loginPassword").value});
+  if(error){setMessage("loginMessage","Login gagal: "+error.message);return;}
+  $("loginPanel").classList.add("hidden"); isAdmin=true; updateAdminUI(); await loadProjects();
+});
+$("logoutButton").addEventListener("click",async()=>{
+  await db.auth.signOut(); isAdmin=false; $("editorPanel").classList.add("hidden"); await loadProjects(); updateAdminUI();
+});
+$("addButton").addEventListener("click",()=>openEditor());
+$("cancelEdit").addEventListener("click",()=>{$("editorPanel").classList.add("hidden");resetForm();});
+$("projectForm").addEventListener("submit",async e=>{
+  e.preventDefault(); if(!isAdmin)return;
+  const rawUrl=$("projectUrl").value.trim();
+  if(rawUrl && !safeUrl(rawUrl)){setMessage("formMessage","URL harus diawali http:// atau https://.");return;}
+  const payload={
+    name:$("projectName").value.trim(),
+    category:$("projectCategory").value,
+    description:$("projectDescription").value.trim(),
+    url:rawUrl,
+    pic:$("projectPic").value.trim(),
+    is_active:$("projectActive").value==="true"
+  };
+  // If your table has an optional 'icon' column, the icon is saved too. The rest of the form works without it.
+  const icon=$("projectIcon").value.trim();
+  if(icon) payload.icon=icon;
+  const id=$("projectId").value;
+  $("saveButton").disabled=true; setMessage("formMessage","Menyimpan data...","notice");
+  let result;
+  if(id) result=await db.from("project_links").update(payload).eq("id",id);
+  else result=await db.from("project_links").insert(payload);
+  $("saveButton").disabled=false;
+  if(result.error && payload.icon) {
+    // Retry without icon only if the database doesn't have an icon column.
+    if(/icon|column/i.test(result.error.message)) {
+      delete payload.icon;
+      result=id ? await db.from("project_links").update(payload).eq("id",id) : await db.from("project_links").insert(payload);
+    }
+  }
+  if(result.error){setMessage("formMessage","Gagal menyimpan: "+result.error.message);return;}
+  setMessage("formMessage","Data berhasil disimpan.","success");
+  $("editorPanel").classList.add("hidden"); resetForm(); await loadProjects();
+});
+async function deleteProject(project) {
+  if(!isAdmin)return;
+  if(!confirm('Hapus proyek "'+project.name+'"? Tindakan ini tidak dapat dibatalkan.'))return;
+  const {error}=await db.from("project_links").delete().eq("id",project.id);
+  if(error){setMessage("pageMessage","Gagal menghapus: "+error.message);return;}
+  await loadProjects();
+}
+$("filters").addEventListener("click",e=>{
+  const button=e.target.closest("button[data-category]"); if(!button)return;
+  selectedCategory=button.dataset.category;
+  document.querySelectorAll("#filters button").forEach(b=>b.classList.toggle("active",b===button));
   renderProjects();
 });
-
-searchInput.addEventListener("input", renderProjects);
-
-renderProjects();
+$("search").addEventListener("input",renderProjects);
+(async function init(){
+  if(SUPABASE_PUBLISHABLE_KEY==="TEMPEL_PUBLISHABLE_KEY_DI_SINI"){
+    setMessage("pageMessage","Sebelum portal bisa mengambil data, ganti TEMPEL_PUBLISHABLE_KEY_DI_SINI dengan Publishable key Supabase milikmu.");
+    return;
+  }
+  const {data}=await db.auth.getSession();
+  isAdmin=!!data.session;
+  updateAdminUI();
+  await loadProjects();
+})();
 </script>
 </body>
 </html>
